@@ -3,6 +3,7 @@
 @endphp
 @if ($sidebarSearchEnable)
 <div class="sidebar">
+
 <div class="widget widget_search">
     <form method="get" class="search-form input-group" action="{{ route('search') }}">  
         <input class="form-control" type="text" value="" name="s" id="s" placeholder="type to search...">
@@ -10,6 +11,8 @@
             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
         </span>
     </form>
+</div>
+
 </div>
 @endif
 
@@ -20,6 +23,8 @@
 @endphp
 
 @if ($sidebarPostCatEnable)
+<div class="sidebar">
+
     <div class="widget widget_categories">
         <h4>Categories</h4>
         <ul>
@@ -35,6 +40,8 @@
             @endforeach
         </ul>
     </div>
+
+</div>
 @endif
 
 
@@ -43,6 +50,8 @@
 @endphp
 
 @if ($sidebarPostTabActive)
+<div class="sidebar">
+
     <div id="widget-tabs" class="widget widget_tabs">
         <ul class="title-tabs">
             <li><a href="#tab1">RECENT</a></li>
@@ -97,6 +106,8 @@
 
         </div>
     </div>
+
+</div>  
 @endif
 
 
@@ -105,6 +116,8 @@
 @endphp
 
 @if ($sidebarTextWidgetActive)
+<div class="sidebar">
+
     <div class="widget">
         <h4>TEXT WIDGET</h4>
         <div class="textwidget">
@@ -112,10 +125,6 @@
             <p><a class="btn-widget" href="contact.html">contact us</a></p>
         </div>
     </div>
-@endif
-
-
 
 </div>
-
-
+@endif

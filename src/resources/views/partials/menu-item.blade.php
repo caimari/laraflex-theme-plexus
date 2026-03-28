@@ -1,5 +1,5 @@
 @if(!empty($item['child']))
-    <li class="menu-item-has-children">
+<li class="dropdown menu-item-has-children">
         <div class="arrow-parent"><i class="fa fa-angle-down"></i></div>
         @php
             if ($item['type'] == 'post') {
@@ -17,7 +17,7 @@
             }
             $displayTitle = $item['name'] ?? $item['title'];
         @endphp
-        <a class="dropdown-item dropdown-toggle" href="{{ $url }}" id="navbarDropdown{{ $item['id'] }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" target="{{ $target }}">
+        <a href="{{ $url }}" id="navbarDropdown{{ $item['id'] }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" target="{{ $target }}">
             {{ $displayTitle }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown{{ $item['id'] }}">
@@ -28,6 +28,7 @@
     </li>
 @else
     <li>
+ 
         @php
             if ($item['type'] == 'post') {
                 $url = route('post.show', ['slug' => $item['slug']]);
@@ -43,7 +44,9 @@
                 $target = $item['target'] ?? "_self";
             }
             $displayTitle = $item['name'] ?? $item['title'];
+    
         @endphp
-        <a class="dropdown-item" href="{{ $url }}" target="{{ $target }}">{{ $displayTitle }}</a>
+        <a href="{{ $url }}" target="{{ $target }}">{{ $displayTitle }}</a>
+        
     </li>
 @endif

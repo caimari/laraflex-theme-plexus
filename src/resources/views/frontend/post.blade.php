@@ -4,17 +4,6 @@
 @inject('route', 'Illuminate\Support\Facades\Route')
 
 
-<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700,300italic,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
-
-    <!-- CSS
-  ================================================== -->
-    <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/owl.carousel.css"/>
-    <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/style.css"/>
-    
-    <link rel="stylesheet" id="fullcolor-css" href="" type="text/css" media="all">
-
 <style>
     .post-thumb {
   width: 100%; /* Establece el ancho del contenedor al 100% del contenedor padre */
@@ -30,8 +19,7 @@
   height: 100%; /* Establece la altura de la imagen al 100% del contenedor */
   object-fit: cover; /* Ajusta la imagen para cubrir todo el contenedor sin deformarse */
 }
-
-    </style>
+</style>
 
 
 <div style="height: 20px;"></div>
@@ -240,52 +228,6 @@
     </div>
 </div>
 
-
-
-
-<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.min.js"></script> 
-<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.responsiveTabs.js"></script>
-<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/owl.carousel.min.js"></script>
-<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/classie.js"></script>
-<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/custom.js"></script>
-
-
-<script>
-    $(document).ready(function(){
-        $('.slick-slider').slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 4,
-            slidesToScroll: 4,
-            responsive: [
-                {
-                    breakpoint: 1024,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 3,
-                        infinite: true,
-                        dots: true
-                    }
-                },
-                {
-                    breakpoint: 600,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 2
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 1,
-                        slidesToScroll: 1
-                    }
-                }
-            ]
-        });
-    });
-</script>
 
 @endsection
 

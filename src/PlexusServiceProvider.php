@@ -9,6 +9,7 @@ use Illuminate\View\FileViewFinder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\ViewErrorBag;
 
 use Caimari\LaraFlex\Controllers\SiteMenuController;
 use Caimari\LaraFlex\Controllers\ViewController;
@@ -16,6 +17,7 @@ use Caimari\LaraFlex\Models\GeneralSettings;
 use Caimari\LaraFlex\Models\Theme;
 use Caimari\LaraFlex\Models\SitePage;
 use Caimari\LaraFlex\Models\SitePost;
+use Caimari\LaraFlex\Models\CodeSnippet;
 use Caimari\LaraFlex\Models\SitePostCategory;
 use Caimari\LaraFlex\Models\SitePostTag;
 use Caimari\LaraFlex\Models\SiteView;
@@ -30,6 +32,8 @@ class PlexusServiceProvider extends ServiceProvider
 
     public function boot()
     {
+
+
         // Publicar los seeders: php artisan vendor:publish --tag=plexus-seeders
         $this->publishes([
             __DIR__.'/../seeders' => database_path('seeders')
@@ -37,10 +41,19 @@ class PlexusServiceProvider extends ServiceProvider
 
 
         $this->loadViewsFrom(__DIR__.'/resources/views', 'plexus');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'plexus');
+       // $this->loadViewsFrom(__DIR__.'/../resources/views', 'plexus');
 
         $this->loadRoutesFrom(__DIR__.'/routes/web.php');
     
+     //    view()->composer('*', function ($view) 
+     //   {
+      //      $view->with('errors', session()->get('errors') ? session()->get('errors') : new ViewErrorBag);
+      //  });
+		
+		View::composer(['layouts.app', 'plexus::app'], function ($view) {
+			$view->with('errors', session()->get('errors') ? session()->get('errors') : new ViewErrorBag);
+		});
+
 		
 		
     $activeTheme = null;
@@ -65,10 +78,13 @@ class PlexusServiceProvider extends ServiceProvider
 		
 
 // $site_description = (!empty($activeTheme->site_description)) ? $activeTheme->site_description : $settings->site_description;
-	$site_description = $activeTheme && $activeTheme->site_description ? $activeTheme->site_description : ($settings && $settings->site_description ? $settings->site_description : '');
-
+$site_description = $activeTheme && $activeTheme->site_description ? $activeTheme->site_description : ($settings && $settings->site_description ? $settings->site_description : '');
 $site_title = $activeTheme && $activeTheme->site_title ? $activeTheme->site_title : ($settings && $settings->site_title ? $settings->site_title : '');
 $site_url = $activeTheme && $activeTheme->site_url ? $activeTheme->site_url : ($settings && $settings->site_url ? $settings->site_url : '');
+
+$login_active = $activeTheme && $activeTheme->login_active ? $activeTheme->login_active : ($settings && $settings->login_active ? $settings->login_active : '');
+$register_active = $activeTheme && $activeTheme->register_active ? $activeTheme->register_active : ($settings && $settings->register_active ? $settings->register_active : '');
+
 $site_email = $activeTheme && $activeTheme->site_email ? $activeTheme->site_email : ($settings && $settings->site_email ? $settings->site_email : '');
 $site_phone = $activeTheme && $activeTheme->site_phone ? $activeTheme->site_phone : ($settings && $settings->site_phone ? $settings->site_phone : '');
 $logo = $activeTheme && $activeTheme->logo ? $activeTheme->logo : ($settings && $settings->logo ? $settings->logo : '');
@@ -84,11 +100,19 @@ $youtube = $activeTheme && $activeTheme->youtube ? $activeTheme->youtube : ($set
 $vimeo = $activeTheme && $activeTheme->vimeo ? $activeTheme->vimeo : ($settings && $settings->vimeo ? $settings->vimeo : '');
 $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $settings->rss ? $settings->rss : '');
 
+// Color Styles
+$color_default = $activeTheme && $activeTheme->color_default ? $activeTheme->color_default : ($settings && $settings->color_default ? $settings->color_default : '');
+$color_default_2 = $activeTheme && $activeTheme->color_default_2 ? $activeTheme->color_default_2 : ($settings && $settings->color_default_2 ? $settings->color_default_2 : '');
+$sub_bar_color = $activeTheme && $activeTheme->sub_bar_color ? $activeTheme->sub_bar_color : ($settings && $settings->sub_bar_color ? $settings->sub_bar_color : '');
+$sub_bar_text_color = $activeTheme && $activeTheme->sub_bar_text_color ? $activeTheme->sub_bar_text_color : ($settings && $settings->sub_bar_text_color ? $settings->sub_bar_text_color : '');
+$header_logo_color = $activeTheme && $activeTheme->header_logo_color ? $activeTheme->header_logo_color : ($settings && $settings->header_logo_color ? $settings->header_logo_color : '');
 
         if ($activeTheme) {
             // Establece la configuración del tema en la configuración global
             config([
-                'theme.site_title' => $site_title,
+                'theme.login_active' => $login_active,
+                'theme.register_active' => $register_active,
+                'theme.site_url' => $site_url,
                 'theme.site_url' => $site_url,
                 'theme.site_description' => $site_description,
                 'theme.site_email' => $site_email,
@@ -118,6 +142,11 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
                 'theme.sidebar_post_tab_active' => $activeTheme->sidebar_post_tab_active,
                 'theme.sidebar_text_widget_active' => $activeTheme->sidebar_text_widget_active,
                 'theme.sidebar_search_active' => $activeTheme->sidebar_search_active,
+                'theme.color_default' => $activeTheme->color_default,
+                'theme.color_default_2' => $activeTheme->color_default_2,
+                'theme.sub_bar_color'   => $activeTheme->sub_bar_color,
+                'theme.sub_bar_text_color' => $activeTheme->sub_bar_text_color,
+                'theme.header_logo_color'   => $activeTheme->header_logo_color,
             ]);
 			
 			 
@@ -126,7 +155,7 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
     
 		
 		    // General Settings
-    		View::composer('*', function ($view) {
+    		View::composer(['layouts.app', 'plexus::app', 'partials.header', 'partials.footer'], function ($view) {
         try {
             $settings = GeneralSettings::firstOrFail();
             $view->with('settings', $settings);
@@ -135,10 +164,15 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
             $view->with('settings', null);
         }
     });
-
+            
+            // Site Themes
+           // View::composer('*', function ($view) {
+             //   $theme = DB::table('site_themes')->first();
+              //  $view->with('theme', $theme);
+           // });
 
         // Posts
-        View::composer('*', function ($view) {
+        View::composer(['layouts.app', 'plexus::app', 'pages.blog', 'pages.post', 'partials.sidebar', 'partials.widgets'], function ($view) {
             $posts = SitePost::orderBy('created_at', 'desc')->paginate(10);
             $PostTotalViews = 0;
             $PostUniqueViews = 0;
@@ -205,7 +239,7 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
         
 
                 // Pages
-                View::composer('*', function ($view) {
+                View::composer(['layouts.app', 'plexus::app', 'pages.page'], function ($view) {
                     $pages = SitePage::orderBy('created_at', 'desc')->paginate(10); 
 
                     $pageTotalViews = 0;
@@ -226,7 +260,7 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
 
 
 			// Categories
-			View::composer('*', function ($view) {
+			View::composer(['layouts.app', 'plexus::app', 'partials.sidebar', 'pages.blog', 'pages.category'], function ($view) {
 				$categories = null;
 				try {
 					if (Schema::hasTable('site_post_categories')) {
@@ -240,7 +274,7 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
 			});
 
 			// Tags
-			View::composer('*', function ($view) {
+			View::composer(['layouts.app', 'plexus::app', 'partials.sidebar', 'pages.blog', 'pages.tag'], function ($view) {
 				$tags = null;
 				try {
 					if (Schema::hasTable('site_post_tags')) {
@@ -311,7 +345,7 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
 
 
 							// Items Menu
-                            View::composer('*', function ($view) {
+                            View::composer(['layouts.app', 'plexus::app', 'partials.header', 'partials.navigation'], function ($view) {
                                 try {
                                     $menuController = new SiteMenuController();
                                     $public_menu = $menuController->showMenu();
@@ -322,6 +356,10 @@ $rss = $activeTheme && $activeTheme->rss ? $activeTheme->rss : ($settings && $se
                                     $view->with('public_menu', []);
                                 }
                             });
+
+
+                        
+
 		
     }
 }

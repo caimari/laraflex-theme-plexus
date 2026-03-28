@@ -9,6 +9,7 @@
   ================================================== -->
     <meta charset="utf-8">
     <title>{{ config('theme.site_title') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="{{ config('theme.site_description') }}">
     <meta name="author" content="{{ config('theme.site_title') }}">
 
@@ -24,16 +25,46 @@
     <!-- CSS
   ================================================== -->
  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
- <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/bootstrap_3.min.css"/>
+ <!-- <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/bootstrap_3.min.css"/> -->
+ 
+ 
+ <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.min.js"></script>
+<script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.responsiveTabs.js"></script>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/colorbox.css"/>
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/owl.carousel.css"/>
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/layerslider/css/layerslider.css" type="text/css">
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/rs-plugin/css/settings.css"/>
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/rev-settings.css"/>
     <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/css/font-awesome.min.css"/>
-    <link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/style.css"/>
     
+    
+    
+<style>
+  :root {
+    --default-main-color: {{ config('theme.color_default') ?? '#19de8e' }};
+    --secondary-color: {{ config('theme.color_default_2') ?? '#16bdfa' }};
+    --sub-bar-color: {{ config('theme.sub_bar_color') ?? '#485057' }};
+    --sub-bar-text-color: {{ config('theme.sub_bar_text_color') ?? '#999' }};
+    --header-logo-color:  {{ config('theme.header_logo_color') ?? '#999' }};
+  }
+</style>
 
+<style>
+ /* Header Logo */
+.navbar .custom-logo a{
+ color: var(--header-logo-color);
+    font-size: 27px;
+    font-weight: bold;
+}
+</style>
+
+<link rel="stylesheet" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/style.css"/>
 
 <!-- Prism -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-okaidia.min.css" integrity="sha512-5HvW0a7ihK3ro2KhwEksDHXgIezsTeZybZDIn8d8Y015Ny+t7QWSIjnlCTjFzlK7Klb604HLGjsNqU/i5mJLjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -48,6 +79,7 @@
     <!-- ================================================== -->
 
 <style>    
+/* Footer Logo */
     .custom-logo-h3 {
     color: white;
 }
@@ -70,7 +102,21 @@
     height: 50px;
     object-fit: cover;
 }
+    .cookie-banner {
+        background-color: #000;
+        color: #fff;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .cookie-text {
+        margin: 0;
+    }
 </style>
+
 
 </head>
 <body>
@@ -90,9 +136,9 @@
                             <p><i class="fa fa-phone-square"></i>{{ config('theme.site_phone') }}</p>
                             @endif
 
-@if(config('theme.site_email'))
-<p><i class="fa fa-envelope-square"></i><a href="mailto:{{ config('theme.site_email') }}">{{ config('theme.site_email') }}</a></p>
-@endif
+                            @if(config('theme.site_email'))
+                            <p><i class="fa fa-envelope-square"></i><a href="mailto:{{ config('theme.site_email') }}">{{ config('theme.site_email') }}</a></p>
+                            @endif
                             </div><!-- Contacts start -->
                         </div>
                         <div class="col-lg-6 col-sm-6"><!-- Social media start -->
@@ -100,23 +146,14 @@
 
 
                             @if(config('theme.facebook'))<a href="{{ config('theme.facebook') }}"><i class="fa fa-facebook"></i></a>@endif
-                                
                                 @if(config('theme.twitter'))<a href="{{ config('theme.twitter') }}"><i class="fa fa-twitter"></i></a>@endif
-                                    
-                                @if(config('theme.linkedin'))<a href="{{ config('theme.linkedin') }}"><i class="fa fa-linkedin"></i></a>@endif
-                                    
+                                @if(config('theme.linkedin'))<a href="{{ config('theme.linkedin') }}"><i class="fa fa-linkedin"></i></a>@endif 
                                 @if(config('theme.google_plus'))<a href="{{ config('theme.google_plus') }}"><i class="fa fa-google-plus"></i></a>@endif
-                                    
                                 @if(config('theme.github'))<a href="{{ config('theme.github') }}"><i class="fa fa-github"></i></a>@endif
-                                    
                                 @if(config('theme.pinterest'))<a href="{{ config('theme.pinterest') }}"><i class="fa fa-pinterest"></i></a>@endif
-                                    
                                 @if(config('theme.instagram'))<a href="{{ config('theme.instagram') }}"><i class="fa fa-instagram"></i></a>@endif
-                                    
                                 @if(config('theme.youtube'))<a href="{{ config('theme.youtube') }}"><i class="fa fa-youtube"></i></a>@endif
-
                                 @if(config('theme.vimeo'))<a href="{{ config('theme.vimeo') }}"><i class="fa fa-vimeo"></i></a>@endif
-                                
                                 @if(config('theme.rss'))<a href="{{ config('theme.rss') }}"><i class="fa fa-rss"></i></a>@endif
                                
                             
@@ -127,51 +164,86 @@
             </div>
         @endif
 
-        <div class="main-bar navbar-container navbar">
-                <div class="container">
 
-             
+       
+        
 
-    <h2 class="logo">
-    <a href="{{ route('home') }}">
-    @if (config('theme.logo'))
-    @php
-        $imagePath = public_path(config('theme.logo'));
-        $imageInfo = @getimagesize($imagePath);
-    @endphp
+    <div class="main-bar navbar-container navbar">
+    <div class="container">
+    <h2 class="logo custom-logo">
+            <a href="{{ route('home') }}">
+                @if (config('theme.logo'))
+                    @php
+                        $imagePath = public_path(config('theme.logo'));
+                        $imageInfo = @getimagesize($imagePath);
+                    @endphp
 
-    @if ($imageInfo !== false)
-        <img src="{{ config('theme.logo') }}" alt="{{ config('theme.site_title') }}">
-    @else
-        {{ config('theme.site_title') }}
-    @endif
-@else
-    {{ config('theme.site_title') }}
-@endif
-    </a>
-</h2>
+                    @if ($imageInfo !== false)
+                        <img src="{{ config('theme.logo') }}" alt="{{ config('theme.site_title') }}">
+                    @else
+                        {{ config('theme.site_title') }}
+                    @endif
+                @else
+                    {{ config('theme.site_title') }}
+                @endif
+            </a>
+        </h2>
+
+        <button class="btn-toggle"><i class="fa fa-reorder"></i></button>
+
+        <nav class="nav">
+            <ul class="main-menu">
+                @foreach($public_menu as $item)
+                    @include('plexus::partials.menu-item', ['item' => $item])
+                @endforeach
 
 
-                    <button class="btn-toggle"><i class="fa fa-reorder"></i></button>
+                @if (Auth::guard('member')->check())
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ Auth::guard('member')->user()->name }}
+                            <span class="caret"></span>
+                        </a>
 
-                    <nav class="nav">
-                        <ul class="main-menu">
-                      
-                            @foreach($public_menu as $item)
-                             @include('plexus::partials.menu-item', ['item' => $item])
-                            @endforeach
+            <ul class="dropdown-menu">
 
-
-							
+            <li><a href="{{ route('member.dashboard') }}">Dashboard</a></li> 
+            <li><a href="{{ route('member.profile.edit') }}">Edit Profile</a></li>               
+            
+            <li>
+                @if (Route::has('members.logout'))
+                    <a href="{{ route('members.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                @else
+                    <a href="#">Logout</a>
+                @endif
+            </li>
                         </ul>
-                    </nav>
+                        @if (Route::has('members.logout'))        
+                            <form id="logout-form" action="{{ route('members.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        @endif
+                    </li>
+                @else
+
+                    @if (config('theme.login_active') && Route::has('member.login'))   
+                        <li><a href="{{ route('member.login') }}">Login</a></li>
+                    @endif
+
+                    @if (config('theme.register_active') && Route::has('member.register'))       
+                        <li><a href="{{ route('member.register') }}">Register</a></li>
+                    @endif
+                @endif
+
+            </ul>
+       
+        </nav>
+
+    </div>
+</div>
                 </div>
             </div><!-- Main bar end -->
         </header>
-
-
-                          
-
 
 
         @if(config('theme.main_content_active'))
@@ -383,25 +455,39 @@
 
         @if(config('theme.footer.copyright_active'))
         <div style="margin-top: 10px;"></div>
-            <div class="copyright">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-9">
-<p>© <span id="currentYear"></span> <a href="{{ config('theme.site_url') }}">{{ config('theme.site_title') }}</a>. All rights reserved.</p>
-                        </div>
-                        <div class="col-md-3">
-                            <p class="back-top"><a href="#" id="to-top">BACK TO TOP <i class="fa fa-angle-up"></i></a></p>
-                        </div>
-                    </div>
-                </div>
+<div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <p>© <span id="currentYear"></span> <a href="{{ config('theme.site_url') }}">{{ config('theme.site_title') }}</a>. All rights reserved.</p>
             </div>
+            <div class="col-md-3">
+                <p class="back-top"><a href="{{ route('use-of-cookies') }}">Cookie Policy</a> | <a href="#" id="to-top">BACK TO TOP <i class="fa fa-angle-up"></i></a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
             @endif
 
     </div> <!-- End Wrapper -->
 
+    <div style="margin-top: 10px;"></div>
+
+    @include('plexus::partials.cookie_consent_banner')
+        
+    <div style="margin-top: 10px;"></div>
+   
+<!-- Sweet Alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <!-- Jquery JS -->
+<!--
 <script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.min.js"></script>
 <script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.responsiveTabs.js"></script>
+-->
+<!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+
 <!-- Classie and jquery.colorbox JS -->
 <script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/classie.js"></script>
 <script type="text/javascript" src="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/js/jquery.colorbox.js"></script>
@@ -475,8 +561,6 @@ $(document).ready(function(){
 </script>
 
 
-
-
 <!-- Sliders with slick -->
 <script>
     $(document).ready(function(){
@@ -515,6 +599,43 @@ $(document).ready(function(){
         });
     });
 </script>
+
+<!-- Tabs -->
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let tabs = document.querySelectorAll('.title-tabs li a');
+        let tabContents = document.querySelectorAll('.content-tabs > div');
+
+        // Oculta todos los tabs excepto el primero al cargar la página
+        for (let i = 1; i < tabContents.length; i++) {
+            tabContents[i].style.display = 'none';
+        }
+
+        // Añade el evento click a los tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Desactiva todos los tabs
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Oculta todos los contenidos de los tabs
+                tabContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                // Activa el tab clickeado
+                this.classList.add('active');
+
+                // Muestra el contenido del tab clickeado
+                document.querySelector(this.getAttribute('href')).style.display = 'block';
+            });
+        });
+    });
+</script>
+
 
 <script>
   var currentYear = new Date().getFullYear();
