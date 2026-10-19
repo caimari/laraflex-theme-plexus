@@ -39,6 +39,12 @@ class PlexusServiceProvider extends ServiceProvider
             __DIR__.'/../seeders' => database_path('seeders')
         ], 'plexus-seeders');
 
+        // Publicar los assets del tema en public/ (docroot public/):
+        // php artisan vendor:publish --tag=laraflex-assets   (añadir --force para actualizarlos)
+        $this->publishes([
+            __DIR__.'/resources/assests' => public_path('vendor/caimari/laraflex-theme-plexus/src/resources/assests'),
+        ], 'laraflex-assets');
+
 
         $this->loadViewsFrom(__DIR__.'/resources/views', 'plexus');
        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'plexus');
