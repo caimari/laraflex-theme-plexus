@@ -2,6 +2,11 @@
 
 Todos los cambios relevantes de este paquete. Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
+## [Sin publicar]
+
+### Cambiado
+- El favicon se declara con `rel="icon"` además de `rel="shortcut icon"` y con `?v=2` en la URL, para que los navegadores que cacheaban el 404 anterior lo vuelvan a pedir.
+
 ## [1.0.3] - 2026-10-19
 
 ### Añadido

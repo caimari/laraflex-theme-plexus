@@ -21,7 +21,8 @@
   ================================================== -->
     <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,500,700,300italic,400italic,500italic,700italic' rel='stylesheet' type='text/css'>
     
-    <link rel="shortcut icon" type="image/x-icon" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/favicon.ico?v=2" />
+    <link rel="shortcut icon" type="image/x-icon" href="/vendor/caimari/laraflex-theme-plexus/src/resources/assests/favicon.ico?v=2" />
     <!-- CSS
   ================================================== -->
  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
