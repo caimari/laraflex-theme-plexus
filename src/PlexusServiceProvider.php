@@ -173,7 +173,17 @@ $header_logo_color = $activeTheme && $activeTheme->header_logo_color ? $activeTh
 
         // Posts
         View::composer(['layouts.app', 'plexus::app', 'pages.blog', 'pages.post', 'partials.sidebar', 'partials.widgets'], function ($view) {
-            $posts = SitePost::orderBy('created_at', 'desc')->paginate(10);
+            // El composer se dispara por cada vista/parcial: se calcula una sola vez por petición.
+            static $cachedData = null;
+            if ($cachedData !== null) {
+                $view->with($cachedData);
+                return;
+            }
+            // Vistas totales/únicas calculadas en la propia consulta (sin N+1).
+            $posts = SitePost::withSum('views as totalViews', 'views')
+                ->withCount('views as uniqueViews')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
             $PostTotalViews = 0;
             $PostUniqueViews = 0;
             $totalViews = 0;
@@ -190,7 +200,9 @@ $header_logo_color = $activeTheme && $activeTheme->header_logo_color ? $activeTh
                 'views as total_views' => function ($query) {
                     $query->select(DB::raw("SUM(views) as total_views"));
                 }
-            ])->orderByDesc('total_views')->take(4)->get();
+            ])->withSum('views as totalViews', 'views')
+              ->withCount('views as uniqueViews')
+              ->orderByDesc('total_views')->take(4)->get();
         
             $popularPosts = SitePost::withCount([
                 'views as total_views' => function ($query) {
@@ -198,7 +210,9 @@ $header_logo_color = $activeTheme && $activeTheme->header_logo_color ? $activeTh
                 }
             ])->orderByDesc('total_views')->take(3)->get();
         
-            $firstThreePostsWithImage = SitePost::whereNotNull('image')
+            $firstThreePostsWithImage = SitePost::withSum('views as totalViews', 'views')
+                                                 ->withCount('views as uniqueViews')
+                                                 ->whereNotNull('image')
                                                  ->where('image', '<>', '')
                                                  ->inRandomOrder()
                                                  ->take(3)
@@ -206,55 +220,69 @@ $header_logo_color = $activeTheme && $activeTheme->header_logo_color ? $activeTh
         
             // Aquí añadimos las vistas totales y las vistas únicas a cada post
             foreach($posts as $post) {
-                $post->totalViews = $post->views->sum('views');
-                $post->uniqueViews = $post->views->count();
+                $post->totalViews = (int) $post->totalViews;
+                $post->uniqueViews = (int) $post->uniqueViews;
                 $PostTotalViews += $post->totalViews;
                 $PostUniqueViews += $post->uniqueViews;
             }
-        
+
             // Y también para los post más vistos y los primeros tres post con imagen
             foreach($mostViewedPosts as $post) {
-                $post->totalViews = $post->views->sum('views');
-                $post->uniqueViews = $post->views->count();
+                $post->totalViews = (int) $post->totalViews;
+                $post->uniqueViews = (int) $post->uniqueViews;
             }
-        
+
             foreach($firstThreePostsWithImage as $post) {
-                $post->totalViews = $post->views->sum('views');
-                $post->uniqueViews = $post->views->count();
+                $post->totalViews = (int) $post->totalViews;
+                $post->uniqueViews = (int) $post->uniqueViews;
             }
         
             // Pasamos las variables a las vistas
-            $view->with('posts', $posts)
-                ->with('postsCount', $postsCount)
-                ->with('postsWithImage', $postsWithImage)
-                ->with('mostViewedPosts', $mostViewedPosts)
-                ->with('firstThreePosts', $firstThreePostsWithImage)
-                ->with('PostTotalViews', $PostTotalViews)
-                ->with('PostUniqueViews', $PostUniqueViews)
-                ->with('totalViews', $totalViews)
-                ->with('uniqueViews', $uniqueViews)
-                ->with('recentPosts', $recentPosts)
-                ->with('popularPosts', $popularPosts);
+            $cachedData = [
+                'posts' => $posts,
+                'postsCount' => $postsCount,
+                'postsWithImage' => $postsWithImage,
+                'mostViewedPosts' => $mostViewedPosts,
+                'firstThreePosts' => $firstThreePostsWithImage,
+                'PostTotalViews' => $PostTotalViews,
+                'PostUniqueViews' => $PostUniqueViews,
+                'totalViews' => $totalViews,
+                'uniqueViews' => $uniqueViews,
+                'recentPosts' => $recentPosts,
+                'popularPosts' => $popularPosts,
+            ];
+            $view->with($cachedData);
         });
         
 
                 // Pages
                 View::composer(['layouts.app', 'plexus::app', 'pages.page'], function ($view) {
-                    $pages = SitePage::orderBy('created_at', 'desc')->paginate(10); 
+                    static $cachedPages = null;
+                    if ($cachedPages !== null) {
+                        $view->with($cachedPages);
+                        return;
+                    }
+                    $pages = SitePage::withSum('views as totalViews', 'views')
+                        ->withCount('views as uniqueViews')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
 
                     $pageTotalViews = 0;
                     $pageUniqueViews = 0;
 
                     foreach ($pages as $page) {
-                        $page->totalViews = $page->views->sum('views');
-                        $page->uniqueViews = $page->views->count();
+                        $page->totalViews = (int) $page->totalViews;
+                        $page->uniqueViews = (int) $page->uniqueViews;
                         $pageTotalViews += $page->totalViews;
                         $pageUniqueViews += $page->uniqueViews;
                     }
 
-                    $view->with('pages', $pages);
-                    $view->with('pageTotalViews', $pageTotalViews);
-                    $view->with('pageUniqueViews', $pageUniqueViews);
+                    $cachedPages = [
+                        'pages' => $pages,
+                        'pageTotalViews' => $pageTotalViews,
+                        'pageUniqueViews' => $pageUniqueViews,
+                    ];
+                    $view->with($cachedPages);
                 });
 
 
